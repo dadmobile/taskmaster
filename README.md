@@ -39,26 +39,6 @@ make run
 
 Builds the React frontend and serves everything from FastAPI at http://localhost:8000.
 
-## Project Structure
-
-```
-backend/
-  app/
-    main.py          # FastAPI app, routes, static file serving
-    models.py        # SQLAlchemy models (Backlog, Task)
-    database.py      # DB engine/session setup
-  requirements.txt
-  taskmaster.db      # SQLite database (auto-created, gitignored)
-
-frontend/
-  src/
-    App.jsx          # Root component, hash-based routing
-    Home.jsx         # Daily view — today + week + backlog summaries
-    BacklogPage.jsx  # Full backlog view with drag-and-drop
-    Sidebar.jsx      # Navigation + create new backlogs
-  vite.config.js     # Dev server proxy config
-```
-
 ## How It Works
 
 - **Backlogs** are lists of tasks. Some are date-based (daily, weekly, monthly) and auto-created; others are standing lists (urgent, easy/fun, projects, longer-term).
