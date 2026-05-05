@@ -4,21 +4,20 @@ import { api } from '../api';
 export default function Sidebar({ backlogs, currentView, onNavigate, onRefresh }) {
   const [showCreate, setShowCreate] = useState(false);
   const [newName, setNewName] = useState('');
-  const [newType, setNewType] = useState('project');
 
   const handleCreate = async (e) => {
     e.preventDefault();
     if (!newName.trim()) return;
-    await api.createBacklog({ name: newName.trim(), type: newType });
+    await api.createBacklog({ name: newName.trim() });
     setNewName('');
     setShowCreate(false);
     onRefresh();
   };
 
-  const grouped = {
-    standing: backlogs.filter((b) => ['urgent', 'easy_fun', 'longer_term'].includes(b.type)),
-    projects: backlogs.filter((b) => b.type === 'project'),
-    monthly: backlogs.filter((b) => b.type === 'monthly'),
+  const togglePin = async (b, e) => {
+    e.stopPropagation();
+    await api.updateBacklog(b.id, { pinned: !b.pinned });
+    onRefresh();
   };
 
   return (
@@ -32,50 +31,27 @@ export default function Sidebar({ backlogs, currentView, onNavigate, onRefresh }
         Today
       </button>
 
-      {grouped.standing.length > 0 && (
-        <div className="sidebar-section">
-          <h4>Backlogs</h4>
-          {grouped.standing.map((b) => (
+      <div className="sidebar-section">
+        <h4>Backlogs</h4>
+        {backlogs.length === 0 && <div className="sidebar-empty">No backlogs yet</div>}
+        {backlogs.map((b) => (
+          <div key={b.id} className="sidebar-backlog-row">
             <button
-              key={b.id}
-              className={currentView === `backlog/${b.id}` ? 'active' : ''}
+              className={`sidebar-backlog${currentView === `backlog/${b.id}` ? ' active' : ''}`}
               onClick={() => onNavigate(`backlog/${b.id}`)}
             >
               {b.name}
             </button>
-          ))}
-        </div>
-      )}
-
-      {grouped.projects.length > 0 && (
-        <div className="sidebar-section">
-          <h4>Projects</h4>
-          {grouped.projects.map((b) => (
             <button
-              key={b.id}
-              className={currentView === `backlog/${b.id}` ? 'active' : ''}
-              onClick={() => onNavigate(`backlog/${b.id}`)}
+              className={`pin-toggle${b.pinned ? ' pinned' : ''}`}
+              onClick={(e) => togglePin(b, e)}
+              title={b.pinned ? 'Unpin from Today view' : 'Pin to Today view'}
             >
-              {b.name}
+              {b.pinned ? '★' : '☆'}
             </button>
-          ))}
-        </div>
-      )}
-
-      {grouped.monthly.length > 0 && (
-        <div className="sidebar-section">
-          <h4>Monthly</h4>
-          {grouped.monthly.map((b) => (
-            <button
-              key={b.id}
-              className={currentView === `backlog/${b.id}` ? 'active' : ''}
-              onClick={() => onNavigate(`backlog/${b.id}`)}
-            >
-              {b.name}
-            </button>
-          ))}
-        </div>
-      )}
+          </div>
+        ))}
+      </div>
 
       <div className="sidebar-section">
         {!showCreate ? (
@@ -89,19 +65,21 @@ export default function Sidebar({ backlogs, currentView, onNavigate, onRefresh }
               placeholder="Backlog name"
               autoFocus
             />
-            <select value={newType} onChange={(e) => setNewType(e.target.value)}>
-              <option value="project">Project</option>
-              <option value="urgent">Urgent</option>
-              <option value="easy_fun">Easy/Fun</option>
-              <option value="monthly">Monthly</option>
-              <option value="longer_term">Longer Term</option>
-            </select>
             <div>
               <button type="submit">Create</button>
-              <button type="button" onClick={() => setShowCreate(false)}>Cancel</button>
+              <button type="button" onClick={() => { setShowCreate(false); setNewName(''); }}>Cancel</button>
             </div>
           </form>
         )}
+      </div>
+
+      <div className="sidebar-section sidebar-footer">
+        <button
+          className={currentView === 'templates' ? 'active' : ''}
+          onClick={() => onNavigate('templates')}
+        >
+          Templates
+        </button>
       </div>
     </nav>
   );
