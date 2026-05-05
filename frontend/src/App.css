@@ -230,3 +230,247 @@ h2 {
   font-size: 20px;
   margin-bottom: 16px;
 }
+
+/* Sidebar — backlog rows with pin toggle */
+.sidebar-backlog-row {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+}
+
+.sidebar-backlog-row .sidebar-backlog {
+  flex: 1;
+}
+
+.pin-toggle {
+  width: 28px !important;
+  flex-shrink: 0;
+  text-align: center !important;
+  color: #555 !important;
+  font-size: 14px !important;
+  padding: 6px 0 !important;
+}
+
+.pin-toggle.pinned {
+  color: #f0c060 !important;
+}
+
+.sidebar-empty {
+  color: #666;
+  font-size: 12px;
+  padding: 4px 10px;
+  font-style: italic;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  border-top: 1px solid #2a2a3e;
+  padding-top: 12px;
+}
+
+/* Day nav */
+.day-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.day-nav button {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.day-nav button:hover {
+  background: #f0f0f0;
+}
+
+.day-title {
+  margin: 0;
+  font-size: 20px;
+  flex: 1;
+}
+
+.day-sub {
+  color: #888;
+  font-weight: normal;
+  font-size: 14px;
+}
+
+.day-jump {
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.jump-today {
+  font-size: 12px !important;
+}
+
+.backlog-header-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.backlog-header-actions button {
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 3px 8px;
+  font-size: 12px;
+  color: #555;
+  cursor: pointer;
+}
+
+.backlog-header-actions button:hover {
+  background: #f0f0f0;
+}
+
+/* Leftovers */
+.leftovers-panel {
+  border-left: 3px solid #f0c060;
+}
+
+.leftover-count {
+  color: #888;
+  font-weight: normal;
+  font-size: 13px;
+}
+
+.bring-all-btn {
+  background: #f0c060 !important;
+  border-color: #d4a040 !important;
+  color: #4a3300 !important;
+  font-weight: 500;
+}
+
+.bring-all-btn:hover {
+  background: #e5b550 !important;
+}
+
+.source-tag {
+  font-size: 11px;
+  color: #999;
+  margin-left: 6px;
+  font-style: italic;
+}
+
+/* Task item — delete button */
+.delete-btn {
+  background: none;
+  border: none;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0 6px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.task-item:hover .delete-btn,
+.template-task:hover .delete-btn {
+  opacity: 1;
+}
+
+.delete-btn:hover {
+  color: #d04040;
+}
+
+.drag-handle.disabled {
+  cursor: default;
+  opacity: 0.3;
+}
+
+/* Empty day */
+.empty-day {
+  color: #888;
+}
+
+.empty-day-sub {
+  font-size: 12px;
+  color: #aaa;
+  margin-top: 6px;
+}
+
+/* Templates */
+.templates-page {
+  max-width: 720px;
+}
+
+.templates-help {
+  color: #666;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.templates-create {
+  flex-direction: row !important;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.templates-create input,
+.templates-create select {
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.template-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.template-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.template-header h3 {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.template-header select,
+.template-header button {
+  font-size: 12px;
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.template-task {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 4px;
+  border-radius: 4px;
+}
+
+.template-task:hover {
+  background: #f8f8f8;
+}
+
+.danger-btn {
+  color: #d04040 !important;
+}
+
+.danger-btn:hover {
+  background: #fff0f0 !important;
+}

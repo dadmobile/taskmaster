@@ -1,25 +1,30 @@
 import { useState, useEffect, useCallback } from 'react';
 import { api } from './api';
 import Sidebar from './components/Sidebar';
-import Home from './pages/Home';
+import DayView from './pages/DayView';
 import BacklogPage from './pages/BacklogPage';
+import TemplatesPage from './pages/TemplatesPage';
 import './App.css';
+
+function isoToday() {
+  return new Date().toISOString().slice(0, 10);
+}
 
 export default function App() {
   const [view, setView] = useState('home');
   const [backlogs, setBacklogs] = useState([]);
+  const [refreshTick, setRefreshTick] = useState(0);
 
   const loadBacklogs = useCallback(async () => {
-    const data = await api.listBacklogs();
-    setBacklogs(data);
+    setBacklogs(await api.listBacklogs());
+    setRefreshTick((t) => t + 1);
   }, []);
 
   useEffect(() => { loadBacklogs(); }, [loadBacklogs]);
 
-  // Handle hash-based navigation
   useEffect(() => {
     const handleHash = () => {
-      const hash = window.location.hash.slice(1); // remove #
+      const hash = window.location.hash.slice(1);
       setView(hash || 'home');
     };
     handleHash();
@@ -33,7 +38,7 @@ export default function App() {
 
   let content;
   if (view.startsWith('backlog/')) {
-    const id = parseInt(view.split('/')[1]);
+    const id = parseInt(view.split('/')[1], 10);
     content = (
       <BacklogPage
         backlogId={id}
@@ -41,8 +46,32 @@ export default function App() {
         onRefreshBacklogs={loadBacklogs}
       />
     );
+  } else if (view.startsWith('date/')) {
+    const date = view.split('/')[1];
+    content = (
+      <DayView
+        key={date}
+        date={date}
+        allBacklogs={backlogs}
+        refreshTick={refreshTick}
+        onRefreshBacklogs={loadBacklogs}
+        onNavigateDate={(d) => navigate(d === isoToday() ? 'home' : `date/${d}`)}
+      />
+    );
+  } else if (view === 'templates') {
+    content = <TemplatesPage />;
   } else {
-    content = <Home allBacklogs={backlogs} onRefreshBacklogs={loadBacklogs} />;
+    const today = isoToday();
+    content = (
+      <DayView
+        key={today}
+        date={today}
+        allBacklogs={backlogs}
+        refreshTick={refreshTick}
+        onRefreshBacklogs={loadBacklogs}
+        onNavigateDate={(d) => navigate(d === today ? 'home' : `date/${d}`)}
+      />
+    );
   }
 
   return (
